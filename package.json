@@ -1,0 +1,22 @@
+{
+  "name": "place-canvas",
+  "version": "1.0.0",
+  "description": "A clone of reddit's awesome 2017 April Fool's place",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "reddit",
+    "canvas",
+    "place"
+  ],
+  "author": "Arinze Okeke",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^4.13.0",
+    "passport": "^0.4.0",
+    "socket.io": "^2.0.4"
+  }
+}
