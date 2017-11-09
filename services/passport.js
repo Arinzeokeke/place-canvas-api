@@ -1,35 +1,29 @@
 const passport = require('passport'),
-  FacebookStrategy = require('passport-facebook').Strategy
+  FacebookTokenStrategy = require('passport-facebook-token')
 const keys = require('../config/keys')
 const User = mongoose.model('users')
 
 passport.use(
-  new FacebookStrategy(
+  new FacebookTokenStrategy(
     {
       clientID: keys.facebookClientId,
-      clientSecret: keys.facebookSecretKey,
-      callbackURL: '/auth/facebook/callback'
+      clientSecret: keys.facebookSecretKey
     },
     async (accessToken, refreshToken, profile, done) => {
       const user = await User.findOne({
-        $or: [
-          {
-            facebookId: profile.id
-          },
-          { email: profile.email }
-        ]
+        facebookId: profile.id
       })
 
       if (user) {
-        //already exists, update fbId if not there
-        user.facebookId = profile.id
-        user.email = profile.email
-        const updatedUser = await user.save()
-        done(null, updatedUser)
+        return done(null, user)
       } else {
-        const newUser = new User({
-          facebookId: profile.id
-        })
+        const avatar = profile.photos.length ? profile.photos[0].value : ''
+        const newUser = await new User({
+          facebookId: profile.id,
+          avatar,
+          username: profile.displayName
+        }).save()
+        return done(null, newUser)
       }
     }
   )
