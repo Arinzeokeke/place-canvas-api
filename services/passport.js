@@ -25,11 +25,17 @@ passport.use(
         console.log(user)
         done(null, user)
       } else {
+        const userWithUsername = await User.findOne({
+          username: profile.displayName.replace(' ', '')
+        })
+        const username = userWithUsername
+          ? ''
+          : profile.displayName.replace(' ', '')
         const avatar = profile.photos.length ? profile.photos[0].value : ''
         const newUser = await new User({
           googleId: profile.id,
           avatar,
-          username: profile.displayName.replace(' ', '')
+          username
         }).save()
 
         done(null, newUser)
@@ -100,11 +106,15 @@ passport.use(
       if (user) {
         return done(null, user)
       } else {
+        const userWithUsername = await User.findOne({
+          username: profile.username
+        })
+        const username = userWithUsername ? '' : profile.displayName
         const avatar = profile.photos.length ? profile.photos[0].value : ''
         const newUser = await new User({
           twitterId: profile.id,
           avatar,
-          username: profile.displayName
+          username
         }).save()
         return done(null, newUser)
       }
@@ -127,11 +137,15 @@ passport.use(
       if (user) {
         return done(null, user)
       } else {
-        const avatar = profile.photos.length ? profile.photos[0].value : ''
+        const userWithUsername = await User.findOne({
+          username: profile.username
+        })
+        const username = userWithUsername ? '' : profile.username
+        const avatar = profile.photos[0].value
         const newUser = await new User({
           githubId: profile.id,
           avatar,
-          username: profile.displayName
+          username
         }).save()
         return done(null, newUser)
       }
