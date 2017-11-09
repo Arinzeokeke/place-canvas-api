@@ -1,0 +1,18 @@
+<!-- src/public/authenticated.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Authenticated</title>
+</head>
+
+<body>
+    Authenticated successfully.
+
+    <script type="text/javascript">
+        window.opener.oauthAuthenticated('{{user}}');
+        window.close();
+    </script>
+</body>
+
+</html>

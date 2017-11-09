@@ -1,5 +1,5 @@
 const passport = require('passport'),
-  FacebookTokenStrategy = require('passport-facebook-token'),
+  FacebookStrategy = require('passport-facebook').Strategy,
   LocalStrategy = require('passport-local').Strategy
 const keys = require('../config/keys')
 const mongoose = require('mongoose')
@@ -26,10 +26,11 @@ passport.use(
 )
 
 passport.use(
-  new FacebookTokenStrategy(
+  new FacebookStrategy(
     {
       clientID: keys.facebookClientId,
-      clientSecret: keys.facebookSecretKey
+      clientSecret: keys.facebookSecretKey,
+      callbackUrl: '/auth/facebook/callback'
     },
     async (accessToken, refreshToken, profile, done) => {
       const user = await User.findOne({
