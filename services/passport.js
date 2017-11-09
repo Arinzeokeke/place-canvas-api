@@ -1,7 +1,29 @@
 const passport = require('passport'),
-  FacebookTokenStrategy = require('passport-facebook-token')
+  FacebookTokenStrategy = require('passport-facebook-token'),
+  LocalStrategy = require('passport-local').Strategy
 const keys = require('../config/keys')
+const mongoose = require('mongoose')
 const User = mongoose.model('users')
+
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: 'user[username]',
+      passwordField: 'user[password]'
+    },
+    async (username, password, done) => {
+      const user = await User.findOne({ username })
+      if (!user || !user.validatePassword(password)) {
+        return done(null, false, {
+          errors: {
+            'email or password': 'is invalid'
+          }
+        })
+      }
+      return done(null, user)
+    }
+  )
+)
 
 passport.use(
   new FacebookTokenStrategy(
