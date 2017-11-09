@@ -12,7 +12,11 @@
     "dev": "nodemon index.js",
     "start": "node index.js"
   },
-  "keywords": ["reddit", "canvas", "place"],
+  "keywords": [
+    "reddit",
+    "canvas",
+    "place"
+  ],
   "author": "Arinze Okeke",
   "license": "MIT",
   "dependencies": {
@@ -23,6 +27,7 @@
     "express": "^4.16.2",
     "express-jwt": "^5.3.0",
     "express-jwt-authz": "^1.0.0",
+    "express-session": "^1.15.6",
     "install": "^0.10.1",
     "jsonwebtoken": "^8.1.0",
     "jwks-rsa": "^1.2.1",

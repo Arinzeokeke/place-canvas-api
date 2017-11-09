@@ -2,7 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors'),
   bodyParser = require('body-parser'),
-  errorhandler = require('errorhandler')
+  errorhandler = require('errorhandler'),
+  session = require('express-session')
 const mongoose = require('mongoose')
 const keys = require('./config/keys')
 
@@ -16,7 +17,18 @@ app.use(require('method-override')())
 
 app.use(express.static(__dirname + '/public'))
 
-mongoose.connect(keys.mongoUrl)
+app.use(
+  session({
+    secret: 'place',
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false
+  })
+)
+
+mongoose.connect(
+  'mongodb://reddit-canvas:dimitar9berbatov@ds249355.mlab.com:49355/reddit-canvas'
+) //(keys.mongoUrl)
 console.log(keys)
 
 //models
