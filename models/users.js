@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.plugin(uniqueValidator, { message: 'is already taken.' })
 
-userSchema.methods.generateJWT = () => {
+userSchema.methods.generateJWT = function() {
   const today = new Date()
   const exp = new Date(today)
   exp.setDate(today.getDate() + 30)
@@ -44,7 +44,7 @@ userSchema.methods.generateJWT = () => {
   )
 }
 
-userSchema.methods.generateAuthBody = () => {
+userSchema.methods.generateAuthBody = function() {
   return {
     draws: this.draws,
     avatar: this.avatar,
