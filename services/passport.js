@@ -69,9 +69,10 @@ passport.use(
     {
       clientID: keys.facebookClientId,
       clientSecret: keys.facebookSecretKey,
-      callbackUrl: '/auth/facebook/callback'
+      callbackURL: '/auth/facebook/callback'
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log(profile)
       const user = await User.findOne({
         facebookId: profile.id
       })
@@ -79,11 +80,17 @@ passport.use(
       if (user) {
         return done(null, user)
       } else {
-        const avatar = profile.photos.length ? profile.photos[0].value : ''
+        const userWithUsername = await User.findOne({
+          username: profile.displayName.replace(' ', '')
+        })
+        const username = userWithUsername
+          ? ''
+          : profile.displayName.replace(' ', '')
+        const avatar = profile.profileUrl ? profile.profileUrl : ''
         const newUser = await new User({
           facebookId: profile.id,
           avatar,
-          username: profile.displayName
+          username
         }).save()
         return done(null, newUser)
       }
