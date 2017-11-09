@@ -35,10 +35,8 @@ app.engine('html', mustacheExpress())
 app.set('view engine', 'mustache')
 app.set('views', __dirname + '/public')
 
-//mongoose.connect(keys.mongoUrl)
-mongoose.connect(
-  'mongodb://reddit-canvas:dimitar9berbatov@ds249355.mlab.com:49355/reddit-canvas'
-)
+mongoose.connect(keys.mongoUrl)
+
 //models
 require('./models/users')
 
