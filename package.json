@@ -27,6 +27,7 @@
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
+    "passport-github2": "^0.1.11",
     "passport-google-oauth": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "socket.io": "^2.0.4"
