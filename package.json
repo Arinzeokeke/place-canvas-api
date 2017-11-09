@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "description": "A clone of reddit's awesome 2017 April Fool's place",
   "main": "index.js",
+  "engines": {
+    "node": "8.9.0",
+    "npm": "5.5.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
-  "keywords": [
-    "reddit",
-    "canvas",
-    "place"
-  ],
+  "keywords": ["reddit", "canvas", "place"],
   "author": "Arinze Okeke",
   "license": "MIT",
   "dependencies": {
