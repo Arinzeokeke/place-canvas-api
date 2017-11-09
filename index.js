@@ -17,6 +17,7 @@ app.use(require('method-override')())
 app.use(express.static(__dirname + '/public'))
 
 mongoose.connect(keys.mongoUrl)
+console.log(keys)
 
 //models
 require('./models/users')
