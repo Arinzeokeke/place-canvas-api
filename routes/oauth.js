@@ -3,13 +3,13 @@ const express = require('express')
 const router = express.Router()
 
 router.get(
-  '/auth/facebook',
+  '/facebook',
   passport.authenticate('facebook', {
     session: false
   })
 )
 router.get(
-  '/auth/facebook/callback',
+  '/facebook/callback',
   passport.authenticate('facebook', { session: false }),
   (req, res) =>
     res.render('authenticated.html', {
@@ -18,14 +18,14 @@ router.get(
 )
 
 router.get(
-  '/auth/twitter',
+  '/twitter',
   passport.authenticate('twitter', {
     session: false
   })
 )
 
 router.get(
-  '/auth/twitter/callback',
+  '/twitter/callback',
   passport.authenticate('twitter', { session: false }),
   (req, res) =>
     res.render('authenticated.html', {
@@ -34,16 +34,33 @@ router.get(
 )
 
 router.get(
-  '/auth/google',
+  '/google',
   passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/plus.login'],
     session: false
   })
 )
 
-app.get(
-  '/auth/google/callback',
+router.get(
+  '/google/callback',
   passport.authenticate('google', { session: false }),
+  (req, res) =>
+    res.render('authenticated.html', {
+      user: JSON.stringify(req.user.generateAuthBody())
+    })
+)
+
+router.get(
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'], session: false })
+)
+
+router.get(
+  '/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: '/login',
+    session: false
+  }),
   (req, res) =>
     res.render('authenticated.html', {
       user: JSON.stringify(req.user.generateAuthBody())
