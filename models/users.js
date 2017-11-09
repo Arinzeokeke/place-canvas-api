@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema(
     draws: { type: Number, default: 0 },
     username: {
       type: String,
-      lowercase: true,
       unique: true,
       required: [true, "can't be blank"],
       match: [/^[a-zA-Z0-9]+$/, 'is invalid'],

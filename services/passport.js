@@ -2,7 +2,7 @@ const passport = require('passport'),
   FacebookStrategy = require('passport-facebook').Strategy,
   LocalStrategy = require('passport-local').Strategy,
   TwitterStrategy = require('passport-twitter').Strategy,
-  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+  GoogleStrategy = require('passport-google-oauth20').Strategy,
   GitHubStrategy = require('passport-github2').Strategy
 const keys = require('../config/keys')
 const mongoose = require('mongoose')
@@ -13,7 +13,8 @@ passport.use(
     {
       clientID: keys.googleClientId,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback'
+      callbackURL: '/auth/google/callback',
+      proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
       const user = await User.findOne({
@@ -21,15 +22,17 @@ passport.use(
       })
 
       if (user) {
-        return done(null, user)
+        console.log(user)
+        done(null, user)
       } else {
         const avatar = profile.photos.length ? profile.photos[0].value : ''
         const newUser = await new User({
           googleId: profile.id,
           avatar,
-          username: profile.displayName
+          username: profile.displayName.replace(' ', '')
         }).save()
-        return done(null, newUser)
+
+        done(null, newUser)
       }
     }
   )

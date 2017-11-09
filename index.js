@@ -3,8 +3,10 @@ const app = express()
 const cors = require('cors'),
   bodyParser = require('body-parser'),
   errorhandler = require('errorhandler'),
-  session = require('express-session')
+  session = require('express-session'),
+  mustacheExpress = require('mustache-express')
 const mongoose = require('mongoose')
+const passport = require('passport')
 const keys = require('./config/keys')
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -26,11 +28,17 @@ app.use(
   })
 )
 
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.engine('html', mustacheExpress())
+app.set('view engine', 'mustache')
+app.set('views', __dirname + '/public')
+
+//mongoose.connect(keys.mongoUrl)
 mongoose.connect(
   'mongodb://reddit-canvas:dimitar9berbatov@ds249355.mlab.com:49355/reddit-canvas'
-) //(keys.mongoUrl)
-console.log(keys)
-
+)
 //models
 require('./models/users')
 
@@ -46,6 +54,6 @@ if (!isProduction) {
   app.use(errorhandler())
 }
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server listen on port ${process.env.PORT || 5000}`)
+app.listen(process.env.PORT || 8000, () => {
+  console.log(`Server listen on port ${process.env.PORT || 8000}`)
 })

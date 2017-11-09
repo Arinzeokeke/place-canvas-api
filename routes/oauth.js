@@ -36,18 +36,22 @@ router.get(
 router.get(
   '/google',
   passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/plus.login'],
+    scope: ['profile', 'email'],
     session: false
   })
 )
 
 router.get(
   '/google/callback',
-  passport.authenticate('google', { session: false }),
-  (req, res) =>
+  passport.authenticate('google', {
+    failureRedirect: '/login',
+    session: false
+  }),
+  (req, res) => {
     res.render('authenticated.html', {
       user: JSON.stringify(req.user.generateAuthBody())
     })
+  }
 )
 
 router.get(
