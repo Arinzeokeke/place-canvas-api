@@ -15,6 +15,6 @@ const getTokenFromHeader = req => {
 
 module.exports = jwt({
   secret: secret,
-  userProperty: 'payload',
+  userProperty: 'user',
   getToken: getTokenFromHeader
 })
