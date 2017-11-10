@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema(
       index: true
     },
     hash: String,
-    salt: String
+    salt: String,
+    lastDraw: Date
   },
   {
     timestamps: true

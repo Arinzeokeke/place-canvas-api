@@ -39,6 +39,7 @@ mongoose.connect(keys.mongoUrl)
 
 //models
 require('./models/users')
+require('./models/pixels')
 
 //passport
 require('./services/passport')
