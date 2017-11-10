@@ -33,7 +33,10 @@ router.post('/draw', auth, async (req, res) => {
     user.draws += 1
     user.lastDraw = new Date()
     await user.save()
-    //TODO socket io emission
+    // socket io emission
+    if (req.io) {
+      req.io.emit('draw', pixel)
+    }
     res.send(pixel)
   }
   res.status(422).send({

@@ -2,6 +2,7 @@ const express = require('express'),
   router = express.Router()
 router.use('/auth', require('./oauth'))
 router.use('/api/users', require('./api/users'))
+router.use('/api/place', require('./api/place'))
 
 router.use(function(err, req, res, next) {
   if (err.name === 'ValidationError') {

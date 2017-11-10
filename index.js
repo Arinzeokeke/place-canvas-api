@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
 const cors = require('cors'),
   bodyParser = require('body-parser'),
   errorhandler = require('errorhandler'),
@@ -10,6 +12,21 @@ const passport = require('passport')
 const keys = require('./config/keys')
 
 const isProduction = process.env.NODE_ENV === 'production'
+
+io.on('connection', socket => {
+  io.emit('welcome', {
+    message: 'Aloha'
+  })
+})
+
+io.on('disconnect', socket => {
+  io.emit('goodbye', { message: 'Bye!' })
+})
+
+app.use((req, res, next) => {
+  req.io = io
+  next()
+})
 
 app.use(cors())
 
@@ -54,6 +71,6 @@ if (!isProduction) {
   app.use(errorhandler())
 }
 
-app.listen(process.env.PORT || 8000, () => {
+http.listen(process.env.PORT || 8000, () => {
   console.log(`Server listen on port ${process.env.PORT || 8000}`)
 })
