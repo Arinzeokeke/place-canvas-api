@@ -33,6 +33,7 @@
     "jwks-rsa": "^1.2.1",
     "method-override": "^2.3.10",
     "mongoose": "^4.13.0",
+    "mongoose-findorcreate": "^2.0.0",
     "mongoose-unique-validator": "^1.0.6",
     "morgan": "^1.9.0",
     "mustache-express": "^1.2.5",

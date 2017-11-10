@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const findOrCreate = require('mongoose-findorcreate')
 
 const pixelSchema = new mongoose.Schema(
   {
@@ -12,5 +13,6 @@ const pixelSchema = new mongoose.Schema(
     timestamps: true
   }
 )
+pixelSchema.plugin(findOrCreate)
 
 mongoose.model('pixels', pixelSchema)

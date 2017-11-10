@@ -36,6 +36,7 @@ app.set('view engine', 'mustache')
 app.set('views', __dirname + '/public')
 
 mongoose.connect(keys.mongoUrl)
+mongoose.Promise = Promise
 
 //models
 require('./models/users')
