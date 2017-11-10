@@ -59,6 +59,16 @@ userSchema.methods.validatePassword = password => {
   return this.hash === hash
 }
 
+userSchema.methods.canDrawPixel = function() {
+  const now = new Date()
+  if (!this.lastDraw || (now - this.lastDraw) / 1000 >= 60) {
+    //you can draw!
+    return true
+  }
+  //you can't draw :(
+  return false
+}
+
 userSchema.methods.setPassword = password => {
   this.salt = crypto.randomBytes(16).toString('hex')
   this.hash = crypto
