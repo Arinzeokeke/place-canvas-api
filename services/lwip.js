@@ -28,7 +28,18 @@ const drawImage = canvas => {
           if (err) {
             return reject(err)
           }
-          resolve(image)
+          image.toBuffer(
+            'png',
+            {
+              transparency: false
+            },
+            (err, buffer) => {
+              if (err) {
+                return reject(err)
+              }
+              resolve(buffer)
+            }
+          )
         })
       })
       .on('error', err => {

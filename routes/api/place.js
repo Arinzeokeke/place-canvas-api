@@ -6,7 +6,6 @@ const auth = require('../../middlewares/auth')
 const { generateEmptyImage, drawImage } = require('../../services/lwip')
 
 router.get('/', async (req, res) => {
-  console.log('a')
   const canvas = await generateEmptyImage()
   const image = await drawImage(canvas)
 
