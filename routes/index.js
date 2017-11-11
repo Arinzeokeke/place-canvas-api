@@ -1,6 +1,7 @@
 const express = require('express'),
   router = express.Router()
 router.use('/auth', require('./oauth'))
+router.use('/api/user', require('./api/user'))
 router.use('/api/users', require('./api/users'))
 router.use('/api/place', require('./api/place'))
 

@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const Pixel = mongoose.model('pixels')
 const { pixelPlaceValidation } = require('../../middlewares/validations')
 const auth = require('../../middlewares/auth')
+
+const currentUser = require('../../middlewares/getCurrentUser')
 const { generateEmptyImage, drawImage } = require('../../services/lwip')
 
 router.get('/', async (req, res) => {
@@ -27,31 +29,39 @@ router.get('/pixel', async (req, res) => {
     .send({ errors: { coord: 'X and Y should both be in the query' } })
 })
 
-router.post('/draw', auth, pixelPlaceValidation, async (req, res) => {
-  const user = req.user
-  if (user.canDrawPixel()) {
-    const { x, y, color: { r, g, b } } = req.body
-    let pixel = await Pixel.findOrCreate({ x, y })
-    pixel.rCol = r
-    pixel.gCol = g
-    pixel.bCol = b
-    pixel._user = user.id
-    pixel.draws += 1
-    const savedPixel = await pixel.save()
-    user.draws += 1
-    user.lastDraw = new Date()
-    await user.save()
-    // socket io emission
-    if (req.io) {
-      req.io.emit('draw', pixel)
+router.post(
+  '/draw',
+  auth,
+  currentUser,
+  pixelPlaceValidation,
+  async (req, res) => {
+    const user = req.user
+    if (user.canDrawPixel()) {
+      const { x, y, color: { r, g, b } } = req.body
+      let pixel = await Pixel.findOrCreate({ x, y })
+      pixel = pixel.doc
+      console.log(pixel)
+      pixel.rCol = r
+      pixel.gCol = g
+      pixel.bCol = b
+      pixel._user = user.id
+      pixel.draws += 1
+      const savedPixel = await pixel.save()
+      user.draws += 1
+      user.lastDraw = new Date()
+      await user.save()
+      // socket io emission
+      if (req.io) {
+        req.io.emit('draw', pixel)
+      }
+      res.send(pixel)
     }
-    res.send(pixel)
+    res.status(422).send({
+      errors: {
+        user: "can't place pixel now"
+      }
+    })
   }
-  res.status(422).send({
-    errors: {
-      user: "can't place pixel now"
-    }
-  })
-})
+)
 
 module.exports = router

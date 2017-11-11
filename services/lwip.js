@@ -20,7 +20,7 @@ const drawImage = canvas => {
     Pixel.find({})
       .stream()
       .on('data', pixel => {
-        const { x, y, color: { rCol, gCol, bCol } } = pixel
+        const { x, y, rCol, gCol, bCol } = pixel
         batch.setPixel(x, y, [rCol, gCol, bCol])
       })
       .on('end', () => {
