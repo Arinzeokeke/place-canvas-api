@@ -3,10 +3,12 @@ const mongoose = require('mongoose')
 const Pixel = mongoose.model('pixels')
 const { pixelPlaceValidation } = require('../../middlewares/validations')
 const auth = require('../../middlewares/auth')
+const { generateEmptyImage, drawImage } = require('../../services/lwip')
 
 router.get('/', (req, res) => {
-  const pixels = Pixel.find({})
-  res.send(pixels)
+  const image = drawImage(generateEmptyImage())
+  //TODO add info about last image update
+  res.set({ 'Content-Type': 'image/png' }).send(image)
 })
 
 router.get('/pixel', async (req, res) => {
