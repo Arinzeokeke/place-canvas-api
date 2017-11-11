@@ -3,7 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const { authValidation } = require('../../middlewares/validations')
 
-router.post('/', validations, async (req, res) => {
+router.post('/', authValidation, async (req, res) => {
   let user = new User({
     username: req.body.user.username
   })
