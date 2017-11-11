@@ -4,30 +4,37 @@ const Pixel = mongoose.model('pixels')
 const { BOARD_SIZE } = require('../config/constants')
 
 const generateEmptyImage = () => {
-  lwip.create(BOARD_SIZE, BOARD_SIZE, 'white', (err, image) => {
-    if (err) {
-      throw err
-    }
-    return image
+  return new Promise((resolve, reject) => {
+    lwip.create(BOARD_SIZE, BOARD_SIZE, 'white', (err, image) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve(image)
+    })
   })
 }
 
 const drawImage = canvas => {
-  let batch = canvas.batch()
-  Pixel.find({})
-    .stream()
-    .on('data', pixel => {
-      const { x, y, color: { rCol, gCol, bCol } } = pixel
-      batch.setPixel(x, y, [rCol, gCol, bCol])
-    })
-    .on('end', () => {
-      batch.exec((err, canvas) => {
-        return canvas
+  return new Promise((resolve, reject) => {
+    let batch = canvas.batch()
+    Pixel.find({})
+      .stream()
+      .on('data', pixel => {
+        const { x, y, color: { rCol, gCol, bCol } } = pixel
+        batch.setPixel(x, y, [rCol, gCol, bCol])
       })
-    })
-    .on('error', err => {
-      throw err
-    })
+      .on('end', () => {
+        batch.exec((err, image) => {
+          if (err) {
+            return reject(err)
+          }
+          resolve(image)
+        })
+      })
+      .on('error', err => {
+        return reject(err)
+      })
+  })
 }
 
 module.exports = {

@@ -5,8 +5,11 @@ const { pixelPlaceValidation } = require('../../middlewares/validations')
 const auth = require('../../middlewares/auth')
 const { generateEmptyImage, drawImage } = require('../../services/lwip')
 
-router.get('/', (req, res) => {
-  const image = drawImage(generateEmptyImage())
+router.get('/', async (req, res) => {
+  console.log('a')
+  const canvas = await generateEmptyImage()
+  const image = await drawImage(canvas)
+
   //TODO add info about last image update
   res.set({ 'Content-Type': 'image/png' }).send(image)
 })
