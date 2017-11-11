@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
-const validations = require('../../middlewares/validations')
+const { authValidation } = require('../../middlewares/validations')
 
 router.post('/', validations, async (req, res) => {
   let user = new User({
@@ -14,7 +14,7 @@ router.post('/', validations, async (req, res) => {
   return res.send({ user: user.generateAuthBody() })
 })
 
-router.post('/login', validations, (req, res, next) => {
+router.post('/login', authValidation, (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err) {
       return next(err)

@@ -14,12 +14,14 @@ const keys = require('./config/keys')
 const isProduction = process.env.NODE_ENV === 'production'
 
 io.on('connection', socket => {
+  console.log('hello')
   io.emit('welcome', {
     message: 'Aloha'
   })
 })
 
 io.on('disconnect', socket => {
+  console.log('goodbye')
   io.emit('goodbye', { message: 'Bye!' })
 })
 

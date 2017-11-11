@@ -6,7 +6,9 @@ const pixelSchema = new mongoose.Schema(
     x: Number,
     y: Number,
     _user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    color: String,
+    rCol: Number,
+    gCol: Number,
+    bCol: Number,
     draws: { type: Number, default: 0 }
   },
   {

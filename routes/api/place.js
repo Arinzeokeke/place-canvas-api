@@ -1,6 +1,8 @@
 const router = require('express').Router()
-const auth = require('../../middlewares/auth')
+const mongoose = require('mongoose')
 const Pixel = mongoose.model('pixels')
+const { pixelPlaceValidation } = require('../../middlewares/validations')
+const auth = require('../../middlewares/auth')
 
 router.get('/', (req, res) => {
   const pixels = Pixel.find({})
@@ -21,12 +23,14 @@ router.get('/pixel', async (req, res) => {
     .send({ errors: { coord: 'X and Y should both be in the query' } })
 })
 
-router.post('/draw', auth, async (req, res) => {
+router.post('/draw', auth, pixelPlaceValidation, async (req, res) => {
   const user = req.user
   if (user.canDrawPixel()) {
-    const { x, y, color } = req.body
+    const { x, y, color: { r, g, b } } = req.body
     let pixel = await Pixel.findOrCreate({ x, y })
-    pixel.color = color
+    pixel.rCol = r
+    pixel.gCol = g
+    pixel.bCol = b
     pixel._user = user.id
     pixel.draws += 1
     const savedPixel = await pixel.save()
