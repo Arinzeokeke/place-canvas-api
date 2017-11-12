@@ -12,7 +12,11 @@
     "dev": "nodemon index.js",
     "start": "node index.js"
   },
-  "keywords": ["reddit", "canvas", "place"],
+  "keywords": [
+    "reddit",
+    "canvas",
+    "place"
+  ],
   "author": "Arinze Okeke",
   "license": "MIT",
   "dependencies": {
