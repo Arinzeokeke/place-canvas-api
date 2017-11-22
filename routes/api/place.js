@@ -64,4 +64,28 @@ router.post(
   }
 )
 
+// temporary. for seeding canvas, dont expose this endpoint
+router.post('/seed', auth, currentUser, async (req, res) => {
+  for (var i = 0; i < 1000; i += 1) {
+    for (var j = 0; j < 1000; j += 1) {
+      let pixel = await Pixel.findOrCreate(
+        { x: i, y: j },
+        {
+          rCol: parseInt(Math.random() * (255 - 0) + 0),
+          gCol: parseInt(Math.random() * (255 - 0) + 0),
+          bCol: parseInt(Math.random() * (255 - 0) + 0),
+          _user: req.user.id
+        }
+      )
+      // pixel.rCol = r
+      // pixel.gCol = g
+      // pixel.bCol = b
+      // pixel._user = user.id
+      // pixel.draws += 1
+      // const savedPixel = await pixel.save()
+    }
+  }
+  res.send({ message: 'lads' })
+})
+
 module.exports = router
